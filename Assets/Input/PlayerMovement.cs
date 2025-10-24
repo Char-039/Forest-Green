@@ -5,6 +5,9 @@ using UnityEngine.XR;
 public class PlayerMovement : MonoBehaviour { // For future reference: Behaviour != Behavior (ig Unity is British)
     public float moveSpeed = 3.0f;
     public float mouseSensitivity = 0.1f;
+    // Locks camera so it doesn't go too far up
+    public float verticalLookLimit = 80.0f;
+    private float xRotation = 0f;
 
     private CharacterController characterController;
     private Transform cameraTransform;
@@ -35,12 +38,6 @@ public class PlayerMovement : MonoBehaviour { // For future reference: Behaviour
     }
 
     private void Update() {
-        HandleMovement();
-        HandleLook();
-    }
-
-    private void HandleMovement()
-    {
         // Either WASD or joystick depending on player's system
         Vector2 input = moveAction.ReadValue<Vector2>();
 
@@ -58,16 +55,24 @@ public class PlayerMovement : MonoBehaviour { // For future reference: Behaviour
 
         // Moves in specified direction and speed
         characterController.Move(desiredMoveDirection * moveSpeed * Time.deltaTime);
-    }
 
-    private void HandleLook() {
+        
+        // ----------------- Camera Controls ----------------- //
+
         // Checks for VR
         if (XRSettings.isDeviceActive) return;
 
-        Vector2 lookInput = lookAction.ReadValue<Vector2>();
+        Vector2 lookInput = playerControls.Player.Look.ReadValue<Vector2>();
         float mouseX = lookInput.x * mouseSensitivity;
+        float mouseY = lookInput.y * mouseSensitivity;
 
-        // Rotates player with mouse
-        transform.Rotate(Vector3.up, mouseX);
+        xRotation -= mouseY;
+        // Keeps player from flipping camera everywhere
+        xRotation = Mathf.Clamp(xRotation, -verticalLookLimit, verticalLookLimit);
+
+        cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+
+        // Rotates player in direction of mouse (only horizontally, of course)
+        transform.Rotate(Vector3.up * mouseX);
     }
 }
