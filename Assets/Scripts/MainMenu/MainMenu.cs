@@ -16,7 +16,7 @@ public class MainMenu : MonoBehaviour
     }
 
     public void Options() {
-        // SceneManager.LoadScene("Example");
+        SceneManager.LoadScene("OptionsScene");
     }
 
 
