@@ -38,7 +38,10 @@ public class PlayerMovement : MonoBehaviour { // For future reference: Behaviour
     }
 
     private void Update() {
-        // Either WASD or joystick depending on player's system
+        // Checks for VR
+        if (XRSettings.isDeviceActive) return;
+
+        // WASD
         Vector2 input = moveAction.ReadValue<Vector2>();
 
         Vector3 forward = cameraTransform.forward;
@@ -58,9 +61,6 @@ public class PlayerMovement : MonoBehaviour { // For future reference: Behaviour
 
         
         // ----------------- Camera Controls ----------------- //
-
-        // Checks for VR
-        if (XRSettings.isDeviceActive) return;
 
         Vector2 lookInput = playerControls.Player.Look.ReadValue<Vector2>();
         float mouseX = lookInput.x * mouseSensitivity;
