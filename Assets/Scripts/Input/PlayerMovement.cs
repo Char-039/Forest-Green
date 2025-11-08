@@ -38,9 +38,6 @@ public class PlayerMovement : MonoBehaviour { // For future reference: Behaviour
     }
 
     private void Update() {
-        // Checks for VR
-        if (XRSettings.isDeviceActive) return;
-
         // WASD
         Vector2 input = moveAction.ReadValue<Vector2>();
 
