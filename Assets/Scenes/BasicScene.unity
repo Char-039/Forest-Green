@@ -4223,7 +4223,7 @@ Light:
   serializedVersion: 11
   m_Type: 0
   m_Color: {r: 0.2031417, g: 0.31492546, b: 0.7830189, a: 1}
-  m_Intensity: 100000
+  m_Intensity: 400
   m_Range: 40.649693
   m_SpotAngle: 48.543102
   m_InnerSpotAngle: 48.543102
