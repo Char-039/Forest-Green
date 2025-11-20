@@ -6,10 +6,35 @@ public class MirrorLogic2 : MonoBehaviour {
     public Transform mirrorSurface;
     public Transform reflectionCameraTransform;
 
+    private Camera reflectionCamera;
+    private bool isMirrorOn = true;
+
+
+
+    void Start() {
+        // Get the Camera component from the reflection camera Transform
+        if (reflectionCameraTransform != null)
+        {
+            reflectionCamera = reflectionCameraTransform.GetComponent<Camera>();
+        }
+    }
+
+    void ToggleMirror()
+    {
+        isMirrorOn = !isMirrorOn;
+
+        if (reflectionCamera != null)
+        {
+            reflectionCamera.enabled = isMirrorOn;
+        }
+
+        // 4. Optionally: Log the new state
+        Debug.Log("Mirror is now: " + (isMirrorOn ? "ON" : "OFF"));
+    }
 
     void LateUpdate() {
 
-        if (mainCamera == null || mirrorSurface == null) return;
+        if (!isMirrorOn || mainCamera == null || mirrorSurface == null) return;
 
         // Player position relative to mirror
         Vector3 localPlayerPos = mirrorSurface.InverseTransformPoint(mainCamera.transform.position);
